@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <% @methods.each do |method| %>
+    <div class="method">
+      <span class="method__full_name"><%= method.full_name %></span>
+      <span class="method__param_seq"><%= method.param_seq %></span>
+      <% if method.comment %>
+        <div class="method__comment"><%= method.description %></div>
+      <% end %>
+      <pre><%= method.markup_code %></pre>
+    </div>
+  <% end %>
+</body>
+</html>
