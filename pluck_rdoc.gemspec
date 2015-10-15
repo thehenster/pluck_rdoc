@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = PluckRdoc::VERSION
   spec.authors       = ["Henry Turner"]
   spec.email         = ["lovcider@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{A custom RDoc generator}
+  spec.description   = %q{A custom RDoc generator}
   spec.homepage      = ""
   spec.license       = "MIT"
 
