@@ -46,6 +46,9 @@
     }
   </style>
   <script type="text/javascript">
+    // This monster guesses if on a mobile or not
+    window.mobilecheck = !window.matchMedia("(min-width: 1080px)").matches;
+
     var pluckMethods = function() {
       var SPACE_BAR_KEYCODE = 32;
       var methods = [];
@@ -54,6 +57,13 @@
       var _loadMethods = function() {
         methods = document.querySelectorAll('.method');
         methods_count = methods.length;
+      }
+
+      var _bindClick = function() {
+        document.getElementById('body').addEventListener('click', function(){
+          _hideFlash();
+          _pluckAMethod();
+        });
       }
 
       var _bindSpaceBar = function() {
@@ -87,6 +97,9 @@
       var init = function() {
         _loadMethods();
         _bindSpaceBar();
+        if(mobilecheck) {
+          _bindClick();
+        }
         _pluckAMethod();
       }
 
@@ -96,9 +109,11 @@
     }();
   </script>
 </head>
-<body>
+<body id="body">
   <div id="flash" class="flash">
-    <div class="flash__message">Press SPACE to pluck yourself a different method.</div>
+    <div class="flash__message">
+      <script type="text/javascript">if(mobilecheck) { document.write('Click'); } else { document.write('Press SPACE'); };</script> to pluck yourself a different method.
+    </div>
   </div>
   <div class="content">
     <% @methods.each do |method| %>
