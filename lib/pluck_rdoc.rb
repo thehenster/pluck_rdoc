@@ -16,6 +16,9 @@ module RDoc
       def generate
         @methods = @store.all_classes_and_modules.uniq.map(&:method_list).flatten
 
+        # Remove all methods without comment. This is reading for fun after all.
+        @methods = @methods.select{|m| m.comment.text.length > 0 }
+
         File.open('index.html', 'w') do |file|
           file << ERB.new(File.read(template_path)).result(binding)
         end
@@ -32,3 +35,4 @@ module RDoc
     end
   end
 end
+
