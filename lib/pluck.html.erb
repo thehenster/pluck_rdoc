@@ -2,17 +2,119 @@
 <html>
 <head>
   <title></title>
+    <style type="text/css">
+    /* Reset */
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Utility for toggling the method visibility */
+    .method { display: none; }
+    .method.current { display: block; }
+
+    /* Flash */
+    .flash__message {
+      margin-bottom: 20px;
+      padding: 10px;
+      font-size: 20px;
+      text-align: center;
+      background-color: lavender;
+    }
+
+    /* Content */
+    .content {
+      padding: 5px;
+    }
+
+    /* Style for the methods */
+    .method__full_name {
+      font-weight: 600;
+    }
+
+    .method__param_seq {
+      font-weight: 600;
+    }
+
+    .method__code {
+      padding: 5px;
+      background-color: whitesmoke;
+    }
+
+    .ruby-comment {
+      color: gray;
+    }
+  </style>
+  <script type="text/javascript">
+    var pluckMethods = function() {
+      var SPACE_BAR_KEYCODE = 32;
+      var methods = [];
+      var methods_count = 0;
+
+      var _loadMethods = function() {
+        methods = document.querySelectorAll('.method');
+        methods_count = methods.length;
+      }
+
+      var _bindSpaceBar = function() {
+        document.onkeydown = function(evt) {
+          var evt = evt || window.event;
+          if (evt.keyCode == SPACE_BAR_KEYCODE) {
+            _hideFlash();
+            _pluckAMethod();
+          }
+        };        
+      }
+
+      var _hideFlash = function() {
+        document.getElementById('flash').setAttribute('style', 'display: none;');
+      }
+
+      var _hideCurrent = function() {
+        var elems = document.querySelectorAll('.method.current');
+
+        [].forEach.call(elems, function(el) {
+            el.classList.remove("current");
+        });
+      }
+
+      var _pluckAMethod = function() {
+        _hideCurrent();
+        var currentMethod = methods[parseInt(Math.random() * methods_count)];  
+        currentMethod.classList.add('current');
+      }
+
+      var init = function() {
+        _loadMethods();
+        _bindSpaceBar();
+        _pluckAMethod();
+      }
+
+      return {
+        init: init
+      }
+    }();
+  </script>
 </head>
 <body>
-  <% @methods.each do |method| %>
-    <div class="method">
-      <span class="method__full_name"><%= method.full_name %></span>
-      <span class="method__param_seq"><%= method.param_seq %></span>
-      <% if method.comment %>
-        <div class="method__comment"><%= method.description %></div>
-      <% end %>
-      <pre><%= method.markup_code %></pre>
-    </div>
-  <% end %>
+  <div id="flash" class="flash">
+    <div class="flash__message">Press SPACE to pluck yourself a different method.</div>
+  </div>
+  <div class="content">
+    <% @methods.each do |method| %>
+      <div class="method">
+        <span class="method__full_name"><%= method.full_name %></span>
+        <span class="method__param_seq"><%= method.param_seq %></span>
+        <% if method.comment %>
+          <div class="method__comment"><%= method.description %></div>
+        <% end %>
+        <pre class="method__code"><%= method.markup_code %></pre>
+      </div>
+    <% end %>
+  </div>
+
+  <script type="text/javascript">
+    pluckMethods.init();
+  </script>
 </body>
 </html>
